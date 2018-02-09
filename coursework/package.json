@@ -1,0 +1,14 @@
+{
+  "name": "1506801_coursework",
+  "version": "0.0.1",
+  "description": "1506801 coursework for module CM4025",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jack Neilson (1506801)",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
