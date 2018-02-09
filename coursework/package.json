@@ -1,7 +1,7 @@
 {
   "name": "1506801_coursework",
-  "version": "0.0.1",
-  "description": "1506801 coursework for module CM4025",
+  "version": "1.0.0",
+  "description": "1506801 coursework for RGU webdev module with Mike Crabbe",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
