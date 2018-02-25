@@ -1,0 +1,20 @@
+{
+  "name": "coach.io",
+  "version": "1.0.0",
+  "description": "An MMO to teach League of Legends coaches macro gameplay",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jackdneilson/webdev"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.1",
+    "mongoose": "^5.0.7",
+    "morgan": "^1.9.0"
+  },
+  "author": "Jack Neilson",
+  "license": "GPL-3.0"
+}
