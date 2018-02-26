@@ -36,7 +36,6 @@ if (config.debug) {
 }
 
 //Set routes
-//TODO: Cleanup routes
 app.use('/user', userRoute);
 app.use('/authenticate', authRoute);
 app.use('/leaderboard', leaderboardRoute);
@@ -44,8 +43,6 @@ app.use(express.static(__dirname + '/public'));
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/app/views/index.html'));
 });
-//app.use('/authenticate', authRoute);
-
 
 app.listen(config.port);
 console.log('Started listening on port '+ config.port);
