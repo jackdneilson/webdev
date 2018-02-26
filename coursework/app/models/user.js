@@ -5,8 +5,6 @@ var bcrypt = require('bcrypt-nodejs');
 
 //Set global variables
 var RANKS = ["Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Challenger"];
-var ValidationError = mongoose.Error.ValidationError;
-var ValidatorError = mongoose.Error.ValidatorError;
 
 var UserSchema = new Schema({
     username: {
@@ -24,8 +22,15 @@ var UserSchema = new Schema({
     rank: {
         type: String,
         required: true
+    },
+
+    experience: {
+        type: Number,
+        required: true
     }
 });
+
+//TODO: Add more validation
 
 //Hash password before user is saved
 //TODO: Add salt

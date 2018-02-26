@@ -1,23 +1,16 @@
-//TODO: Add routes
 //Load modules
 var express = require('express');
 
 //Load models
 var User = require('../models/user.js');
 
+//Load config
+var config = require('../../config');
+var secret = config.secret;
+
 var router = express.Router();
 
-router.use(function(req, res, next) {
-    //var authToken = req.params.authToken;
-    //TODO: Validate token
-    next();
-});
-
-router.get('/', function(req, res) {
-
-});
-
-router.post('/user', function(req, res) {
+router.post('/', function(req, res) {
     var user = new User();
     user.username = req.body.username;
     user.password = req.body.password;
@@ -50,5 +43,13 @@ router.post('/user', function(req, res) {
         res.json({message: 'Success'});
     });
 });
+
+router.use(function(req, res, next) {
+    //var authToken = req.params.authToken;
+    //TODO: Validate token
+    next();
+});
+
+//TODO: Add route for updating user
 
 module.exports = router;

@@ -1,0 +1,16 @@
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Rank</th>
+        <th>Experience</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="user in leaderboard.users">
+        <td>{{user.username}}</td>
+        <td>{{user.rank}}</td>
+        <td>{{user.experience}}</td>
+    </tr>
+    </tbody>
+</table>

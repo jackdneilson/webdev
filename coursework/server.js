@@ -2,22 +2,22 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
+var path = require('path');
+
+var config = require('./config');
 
 //Connect to database
 //TODO: Add logic for remote database
 //TODO: Add logic for failure to connect
-var con = mongoose.connect('mongodb://localhost:27017/coachio');
+var con = mongoose.connect(config.database);
 
 //Load routes
-var apiRoutes = require('./routes/api_routes');
-var frontendRoutes = require('./routes/frontend_routes');
+var userRoute = require('./app/routes/user');
+var authRoute = require('./app/routes/authenticate');
+var leaderboardRoute = require('./app/routes/leaderboard');
 
 //Load models
-var User = require('./models/user');
-
-//Set default env variables
-var PORT = process.env.PORT || 8080;
-var DEBUG = process.env.DEBUG || false;
+var User = require('./app/models/user');
 
 //Configure CORS requests - INSECURE
 //TODO: Secure CORS requests
@@ -29,18 +29,23 @@ app.use(function(req, res, next) {
 });
 
 //If debug is set, log all requests to console
-if (DEBUG) {
+if (config.debug) {
     console.log('Debug is true, logging all requests.');
     var morgan = require('morgan');
     app.use(morgan('dev'));
 }
 
-
-
 //Set routes
 //TODO: Cleanup routes
-//app.use('/', frontendRoutes);
-app.use('/api', apiRoutes);
+app.use('/user', userRoute);
+app.use('/authenticate', authRoute);
+app.use('/leaderboard', leaderboardRoute);
+app.use(express.static(__dirname + '/public'));
+app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname + '/public/app/views/index.html'));
+});
+//app.use('/authenticate', authRoute);
 
-app.listen(PORT);
-console.log('Started listening on port '+ PORT);
+
+app.listen(config.port);
+console.log('Started listening on port '+ config.port);
