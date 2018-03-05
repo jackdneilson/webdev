@@ -25,7 +25,7 @@ router.post('/', function(req, res){
                 res.json({
                     message: 'Failed to authenticate',
                     reason: 'No user with that username exists.'
-                })
+                });
             } else if (user) {
                 var validPassword = user.comparePassword(req.body.password);
                 if (!validPassword) {
@@ -35,7 +35,11 @@ router.post('/', function(req, res){
                     })
                 } else {
                     var token = jwt.sign({
-                        username: user.username
+                        id: user._id,
+                        username: user.username,
+                        rank: user.rank,
+                        experience: user.experience,
+                        acc_type: user.acc_type
                     }, secret, {
                         expiresIn: '24h'
                     });
@@ -48,3 +52,5 @@ router.post('/', function(req, res){
             }
         })
 });
+
+module.exports = router;

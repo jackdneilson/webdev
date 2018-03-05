@@ -27,8 +27,13 @@ var UserSchema = new Schema({
     experience: {
         type: Number,
         required: true
+    },
+
+    acc_type: {
+        type: String,
+        required: true
     }
-});
+}, {collection: 'coachio'});
 
 //TODO: Add more validation
 
@@ -53,7 +58,8 @@ UserSchema.pre('save', function(next) {
     var user = this;
     var rank = user.rank.valueOf();
     if (!(RANKS.includes(rank))) {
-        return next('rank');
+        var err = {code: 'rank'};
+        return next(err);
     }
     next();
 });

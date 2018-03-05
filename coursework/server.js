@@ -3,8 +3,14 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 var path = require('path');
+var bodyParser = require('body-parser');
 
+//Set config
 var config = require('./config');
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 //Connect to database
 //TODO: Add logic for remote database
