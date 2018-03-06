@@ -1,7 +1,7 @@
 angular.module('authService', [])
 
 //Factory to handle login
-.factory('auth', function($http, $q, AuthToken) {
+.factory('Auth', function($http, $q, AuthToken) {
     var authFactory = {};
 
     authFactory.login = function(username, password) {
@@ -32,7 +32,7 @@ angular.module('authService', [])
             return $http.get('/me');
         } else {
             return $q.reject({
-                message: "Failed",
+                success: false,
                 reason: "User has no token."
             });
         }
@@ -42,7 +42,7 @@ angular.module('authService', [])
 })
 
 //Factory to handle tokens
-.factory('authToken', function($window) {
+.factory('AuthToken', function($window) {
     var authTokenFactory = {};
 
     authTokenFactory.getToken = function() {
@@ -61,7 +61,7 @@ angular.module('authService', [])
 })
 
 //Factory to inject tokens into every request
-.factory('authInjector', function($q, $location, AuthToken) {
+.factory('AuthInjector', function($q, $location, AuthToken) {
     var injectorFactory = {};
 
     injectorFactory.request = function(config) {

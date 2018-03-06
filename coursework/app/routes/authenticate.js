@@ -23,14 +23,14 @@ router.post('/', function(req, res){
             //Check for empty result
             if (!user) {
                 res.json({
-                    message: 'Failed to authenticate',
+                    success: false,
                     reason: 'No user with that username exists.'
                 });
             } else if (user) {
                 var validPassword = user.comparePassword(req.body.password);
                 if (!validPassword) {
                     res.json({
-                        message: 'Failed to authenticate',
+                        success: false,
                         reason: 'Incorrect password'
                     })
                 } else {
@@ -45,7 +45,7 @@ router.post('/', function(req, res){
                     });
 
                     res.json({
-                       message: 'Success',
+                       success: true,
                        token: token
                     });
                 }

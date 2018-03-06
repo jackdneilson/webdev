@@ -11,6 +11,7 @@ var secret = config.secret;
 
 var router = express.Router();
 
+//Route to add new user
 router.post('/', function(req, res) {
     var user = new User();
     user.username = req.body.username;
@@ -20,33 +21,27 @@ router.post('/', function(req, res) {
     user.save(function(err) {
         if (err) {
             switch (err.code) {
-                case 'rank':
-                    res.json({
-                        message: 'Failed to save user',
-                        reason: 'Rank must be Bronze, Silver, Gold, Platinum, Diamond, Master or Challenger.'
-                    });
-                    break;
-
                 case 11000:
                     res.json({
-                        message: 'Failed to save user',
+                        success: false,
                         reason: 'User already exists'
                     });
                     break;
 
                 default:
                     res.json({
-                        message: 'Failed to save user',
-                        error: err
+                        success: false,
+                        reason: err
                     });
                     break;
             }
             return;
         }
-        res.json({message: 'Success'});
+        res.json({success: true});
     });
 });
 
+//Middleware to check valid token exists
 router.use(function(req, res, next) {
     var token = req.body.token || req.headers['x-access-token'];
     if (token) {
@@ -54,7 +49,7 @@ router.use(function(req, res, next) {
             if (err) {
                 return res.json({
                     success: false,
-                    message: 'Failed to authenticate token.'
+                    reason: 'Failed to authenticate token.'
                 });
             } else {
                 req.decoded = decoded;
@@ -71,31 +66,39 @@ router.use(function(req, res, next) {
     next();
 });
 
+//Route to get information about current user (stored in token auth middleware)
 router.get('/me', function(req, res) {
     res.send(req.decoded);
 });
 
+//Route to update a single user given id
 router.post('/:user_id', function(req, res) {
-    if (req.decoded['acc_type'] !== 'admin' && req.decoded['id'] !== req.params.user_id) {
+    var user_id = req.params.user_id;
+    var username = req.body.username;
+    var password = req.body.password;
+    var experienceGained = req.body.experienceGained;
+
+    if (req.decoded['acc_type'] !== 'admin' && req.decoded['id'] !== user_id) {
         return res.status(403).send({
             success: false,
             reason: 'Account has insufficient privileges.'
         })
     }
 
-    var user_id = req.params.user_id;
-
-    var username = req.body.username;
-    var password = req.body.password;
-    var rankUp = req.body.rankUp;
-    var experienceGained = req.body.experienceGained
-
     User.findOne({
         _id: user_id
     })
         .select('username password rank experience')
         .exec(function(err, user) {
-            if (err) throw err;
+            if (err) {
+                switch (err.code) {
+                    default:
+                        res.json({
+                            success: false,
+                            reason: err
+                        })
+                }
+            }
 
             if (!user) {
                 res.json({
@@ -105,29 +108,35 @@ router.post('/:user_id', function(req, res) {
             } else if (user) {
                 if (username) user.username = username;
                 if (password) user.password = password;
-                if (rankUp) {
+                if (experienceGained) user.experience += experienceGained;
+                if (user.experience > 10000) {
                     switch (user.rank) {
                         case 'Bronze':
+                            user.experience -= 10000;
                             user.rank = 'Silver';
                             break;
                         case 'Silver':
+                            user.experience -= 10000;
                             user.rank = 'Gold';
                             break;
                         case 'Gold':
+                            user.experience -= 10000;
                             user.rank = 'Platinum';
                             break;
                         case 'Platinum':
+                            user.experience -= 10000;
                             user.rank = 'Diamond';
                             break;
                         case 'Diamond':
+                            user.experience -= 10000;
                             user.rank = 'Master';
                             break;
                         case 'Master':
+                            user.experience -= 10000;
                             user.rank = 'Challenger';
                             break;
                     }
                 }
-                if (experienceGained) user.experience += experienceGained;
             }
         })
         .save(function(err) {
@@ -139,6 +148,7 @@ router.post('/:user_id', function(req, res) {
                 return;
             }
 
+            //Token contents no longer consistent with state, must regenerate.
             var token = jwt.sign({
                 id: user.id,
                 username: user.username,

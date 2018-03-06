@@ -12,8 +12,18 @@
     <!-- Javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+
+    <!-- Controllers -->
+    <script src="app/controllers/mainCtrl.js"></script>
+
+    <!-- Services -->
+    <script src="app/services/authenticate.js"></script>
+    <script src="app/services/leaderboard.js"></script>
+    <script src="app/services/users.js"></script>
+
+    <!-- Main Angular files -->
     <script src="app/app.routes.js"></script>
-    <script src="app/controllers/coachio.js"></script>
+    <script src="app/app.js"></script>
 </head>
 
 <body class="container" ng-app="coachio" ng-controller="mainController as main">
@@ -25,7 +35,9 @@
         </div>
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="/">Home</a></li>
+            <li ng-if="main.loggedIn">{{main.user.username}}</li>
+            <li ng-if="!(main.loggedIn)"><a href="/login">Log in</a></li>
+            <li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Log out</a></li>
             <li><a href="/leaderboard">Leaderboard</a></li>
             <li><a href="/play">Play</a></li>
         </ul>

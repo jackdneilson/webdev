@@ -21,6 +21,12 @@ angular.module('app.routes', ['ngRoute'])
             templateUrl: 'app/views/pages/play.html',
             controller: 'playController',
             controllerAs: 'play'
+        })
+
+        .when('/login', {
+            templateUrl: 'app/views/pages/login.html',
+            controller: 'loginController',
+            controllerAs: 'login'
         });
 
     $locationProvider.html5Mode(true);
