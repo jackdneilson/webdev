@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 //Set global variables
 var RANKS = ["Bronze", "Silver", "Gold", "Platinum", "Diamond", "Master", "Challenger"];
+var ACC_TYPES = ["User", "Admin"];
 
 var UserSchema = new Schema({
     username: {
@@ -58,8 +59,17 @@ UserSchema.pre('save', function(next) {
     var user = this;
     var rank = user.rank.valueOf();
     if (!(RANKS.includes(rank))) {
-        var err = {code: 'rank'};
-        return next(err);
+        return next({code: 'rank'});
+    }
+    next();
+});
+
+//Validate account type is in list of accepted values before updating
+UserSchema.pre('save', function(next) {
+    var user = this;
+    var accType = user.acc_type.valueOf();
+    if (!(ACC_TYPES.includes(accType))) {
+        return next({code: 'accountType'});
     }
     next();
 });

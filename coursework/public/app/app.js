@@ -3,7 +3,13 @@ angular.module('coachio', [
     'authService',
     'userService',
     'leaderboardService',
-    'mainCtrl'
+    'socketService',
+    'mainCtrl',
+    'homeCtrl',
+    'leaderboardCtrl',
+    'playCtrl',
+
+    'btford.socket-io'
 ])
 
 .config(function($httpProvider) {

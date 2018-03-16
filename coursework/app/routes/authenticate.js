@@ -3,7 +3,7 @@ var jwt = require('jsonwebtoken');
 var express = require('express');
 
 //Load models
-var User = require('../models/user');
+var User = require('../models/users');
 
 //Load config
 var config = require('../../config');

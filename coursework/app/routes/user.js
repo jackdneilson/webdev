@@ -3,7 +3,7 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 
 //Load models
-var User = require('../models/user.js');
+var User = require('../models/users.js');
 
 //Load config
 var config = require('../../config');
@@ -18,6 +18,7 @@ router.post('/', function(req, res) {
     user.password = req.body.password;
     user.rank = 'Bronze';
     user.experience = 0;
+    user.acc_type = 'User';
     user.save(function(err) {
         if (err) {
             switch (err.code) {
@@ -67,7 +68,7 @@ router.use(function(req, res, next) {
 });
 
 //Route to get information about current user (stored in token auth middleware)
-router.get('/me', function(req, res) {
+router.get('/', function(req, res) {
     res.send(req.decoded);
 });
 
@@ -88,7 +89,7 @@ router.post('/:user_id', function(req, res) {
     User.findOne({
         _id: user_id
     })
-        .select('username password rank experience')
+        .select('username password rank experience acc_type')
         .exec(function(err, user) {
             if (err) {
                 switch (err.code) {

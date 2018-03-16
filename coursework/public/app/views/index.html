@@ -7,19 +7,28 @@
     <base href="/">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
     <!-- Javascript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Libraries -->
+    <script src="assets/libs/angular.js"></script>
+    <script src="assets/libs/angular-route.js"></script>
+    <script src="assets/libs/jquery-3.3.1.min.js"></script>
+    <script src="assets/libs/socket.min.js"></script>
 
     <!-- Controllers -->
     <script src="app/controllers/mainCtrl.js"></script>
+    <script src="app/controllers/homeCtrl.js"></script>
+    <script src="app/controllers/leaderboardCtrl.js"></script>
+    <script src="app/controllers/playCtrl.js"></script>
 
     <!-- Services -->
     <script src="app/services/authenticate.js"></script>
     <script src="app/services/leaderboard.js"></script>
     <script src="app/services/users.js"></script>
+    <script src="app/services/socket.js"></script>
 
     <!-- Main Angular files -->
     <script src="app/app.routes.js"></script>

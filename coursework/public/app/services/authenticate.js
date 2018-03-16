@@ -5,7 +5,7 @@ angular.module('authService', [])
     var authFactory = {};
 
     authFactory.login = function(username, password) {
-        return $http.post('/authenticate', {
+        return $http.post('/api/authenticate', {
             username: username,
             password: password
         })
@@ -29,7 +29,7 @@ angular.module('authService', [])
 
     authFactory.getUser = function() {
         if (AuthToken.getToken()) {
-            return $http.get('/me');
+            return $http.get('/api/user');
         } else {
             return $q.reject({
                 success: false,

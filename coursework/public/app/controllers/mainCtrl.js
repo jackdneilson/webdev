@@ -10,6 +10,9 @@ angular.module('mainCtrl', ['app.routes'])
         Auth.getUser()
             .then(function(response) {
                 vm.user = response.data;
+            })
+            .catch(function(reason) {
+                vm.error = reason;
             });
     });
 
@@ -23,6 +26,9 @@ angular.module('mainCtrl', ['app.routes'])
                 } else {
                     vm.error = data;
                 }
+            })
+            .catch(function(reason) {
+                vm.error = reason;
             });
     };
 
@@ -33,21 +39,6 @@ angular.module('mainCtrl', ['app.routes'])
 
         $location.path('/');
     };
-})
-
-.controller('homeController', function() {
-    var vm = this;
-
-    vm.welcomeMessage = 'Welcome to Coach.io!'
-})
-
-.controller('leaderboardController', function($http) {
-    var vm = this;
-
-    $http.get('/leaderboard')
-        .then(function(data) {
-            vm.users = data.users;
-        });
 })
 
 .controller('playController', function() {
