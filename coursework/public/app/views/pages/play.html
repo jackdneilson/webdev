@@ -1,7 +1,56 @@
-<div id="gameState">
+<div id="gameState"
+     ng-if="play.beginClicked">
+    Turn: {{play.gameState.turn}}
     {{play.gameState}}
+
+    <div id="abilities" class="text-center">
+        <img src="assets/img/Dance_of_Arrows.png" style="margin-right: 8%">
+        <img src="assets/img/Wolf's_Frenzy.png" style="margin-right: 8%">
+        <img src="assets/img/Mounting_Dread.png" style="margin-right: 8%">
+        <img src="assets/img/Lamb's_Respite.png">
+    </div>
 </div>
 
-<div id="userInput">
-    <button ng-click="play.sendMessage()">Click Me!</button>
+<div id="userInput"
+     class="vertical-center text-center"
+     style="margin: 25% 0 0 0; width:100%; text-align: center;"
+     ng-if="play.beginClicked">
+
+    <button id="choice1"
+            class="btn btn-lg btn-primary"
+            style="width:20%; margin-right: 20px;"
+            disabled="{{play.choice1_disabled}}">
+        test
+    </button>
+
+    <button id="choice2"
+            class="btn btn-lg btn-primary"
+            style="width:20%; margin-right: 20px;"
+            disabled="{{play.choice2_disabled}}">
+        test
+    </button>
+
+    <button id="choice3"
+            class="btn btn-lg btn-primary"
+            style="width:20%; margin-right: 20px;"
+            disabled="{{play.choice3_disabled}}">
+        test
+    </button>
+
+    <button id="choice4"
+            class="btn btn-lg btn-primary"
+            style="width:20%;"
+            disabled="{{play.choice4_disabled}}">
+        test
+    </button>
+
+</div>
+
+<div class="vertical-center text-center">
+    <button class="btn btn-lg btn-primary center-block"
+            style="font-size: 72px; margin-top: 15%"
+            ng-click="play.beginClick()"
+            ng-if="!(play.beginClicked)">
+        Begin!
+    </button>
 </div>
