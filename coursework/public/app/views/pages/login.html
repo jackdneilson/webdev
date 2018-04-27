@@ -1,0 +1,12 @@
+<div class="container">
+            <form ng-submit="login.doLogin()" name="signinForm" class="form-signin" style="margin: 10% 30% 0 30%;">
+                <input ng-model="login.loginData.username" type="text" class="form-control" placeholder="Username" required autofocus>
+                <input ng-model="login.loginData.password" type="password" class="form-control" placeholder="Password" required>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+    <a href="#" class="text-center new-account" style="display: block;">Create an account </a>
+
+    <div ng-if="login.error">
+        <h1 class="alert"> {{login.error.data.reason}} </h1>
+    </div>
+</div>

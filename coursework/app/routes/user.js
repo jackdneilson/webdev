@@ -12,7 +12,7 @@ var secret = config.secret;
 var router = express.Router();
 
 //Route to add new user
-router.post('/', function(req, res) {
+router.post('/new', function(req, res) {
     var user = new User();
     user.username = req.body.username;
     user.password = req.body.password;
@@ -73,8 +73,7 @@ router.get('/', function(req, res) {
 });
 
 //Route to update a single user given id
-router.post('/:user_id', function(req, res) {
-    var user_id = req.params.user_id;
+router.post('/', function(req, res) {
     var username = req.body.username;
     var password = req.body.password;
     var experienceGained = req.body.experienceGained;
@@ -87,7 +86,7 @@ router.post('/:user_id', function(req, res) {
     }
 
     User.findOne({
-        _id: user_id
+        username: username
     })
         .select('username password rank experience acc_type')
         .exec(function(err, user) {

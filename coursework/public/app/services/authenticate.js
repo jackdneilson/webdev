@@ -9,9 +9,14 @@ angular.module('authService', [])
             username: username,
             password: password
         })
-            .success(function(data) {
-                AuthToken.setToken(data.token);
+            .then(function(data) {
+                AuthToken.setToken(data.data.token);
                 return data;
+            })
+            .catch(function(reason) {
+                return {
+                    success: false,
+                    reason: reason};
             });
     };
 

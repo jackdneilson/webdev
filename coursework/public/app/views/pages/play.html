@@ -1,7 +1,17 @@
+<div ng-if="play.error">
+    {{play.error}}
+</div>
+
 <div id="gameState"
-     ng-if="play.beginClicked">
-    Turn: {{play.gameState.turn}}
-    {{play.gameState}}
+     ng-if="play.beginClicked && !play.showResults">
+    Turn {{play.gameState.turn}}
+    <h1>Health: {{play.gameState.health}}</h1>
+    <h1>Experience: {{play.gameState.exp}}</h1>
+    <h1>Gold: {{play.gameState.gold}}</h1>
+
+    <div class="text-center">
+        <h1>{{play.gameMessage}}</h1>
+    </div>
 
     <div id="abilities" class="text-center">
         <img src="assets/img/Dance_of_Arrows.png" style="margin-right: 8%">
@@ -9,41 +19,51 @@
         <img src="assets/img/Mounting_Dread.png" style="margin-right: 8%">
         <img src="assets/img/Lamb's_Respite.png">
     </div>
+
+    <div id="abilities_level" class="text-center">
+        <h1 style="margin-right: 12%; display: inline-block">{{play.gameState.q_rank}}</h1>
+        <h1 style="margin-right: 12%; display: inline-block">{{play.gameState.w_rank}}</h1>
+        <h1 style="margin-right: 12%; display: inline-block">{{play.gameState.e_rank}}</h1>
+        <h1 style="display: inline-block">{{play.gameState.r_rank}}</h1>
+    </div>
 </div>
 
 <div id="userInput"
      class="vertical-center text-center"
      style="margin: 25% 0 0 0; width:100%; text-align: center;"
-     ng-if="play.beginClicked">
+     ng-if="play.beginClicked && !play.showResults">
 
-    <button id="choice1"
+    <button ng-disabled="play.choice1_disabled"
+            ng-click="play.choice1_clicked()"
+            id="choice1"
             class="btn btn-lg btn-primary"
-            style="width:20%; margin-right: 20px;"
-            disabled="{{play.choice1_disabled}}">
-        test
+            style="width:20%; margin-right: 20px;">
+        {{play.choice1}}
     </button>
 
-    <button id="choice2"
+    <button ng-disabled="play.choice2_disabled"
+            ng-click="play.choice2_clicked()"
+            id="choice2"
             class="btn btn-lg btn-primary"
-            style="width:20%; margin-right: 20px;"
-            disabled="{{play.choice2_disabled}}">
-        test
+            style="width:20%; margin-right: 20px;">
+        {{play.choice2}}
     </button>
 
-    <button id="choice3"
+    <button ng-disabled="play.choice3_disabled"
+            ng-click="play.choice3_clicked()"
+            id="choice3"
             class="btn btn-lg btn-primary"
-            style="width:20%; margin-right: 20px;"
-            disabled="{{play.choice3_disabled}}">
-        test
+            style="width:20%; margin-right: 20px;">
+        {{play.choice3}}
     </button>
 
-    <button id="choice4"
+    <button ng-disabled="play.choice4_disabled"
+            ng-click="play.choice4_clicked()"
+            id="choice4"
             class="btn btn-lg btn-primary"
-            style="width:20%;"
-            disabled="{{play.choice4_disabled}}">
-        test
+            style="width:20%;">
+        {{play.choice4}}
     </button>
-
 </div>
 
 <div class="vertical-center text-center">
@@ -53,4 +73,55 @@
             ng-if="!(play.beginClicked)">
         Begin!
     </button>
+</div>
+
+<div ng-if="play.beginClicked && !play.showResults" style="position:fixed; bottom: 0; left:0; width:22.5%">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Log</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="string in play.history track by $index">
+            <td>{{string}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<div ng-if="main.loggedIn" style="position: fixed; bottom: 0; right:0; width:57.5%">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Username</th>
+            <th>Message</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="message in play.messages track by $index">
+            <td>{{message.username}}</td>
+            <td>{{message.content}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <input type="text" ng-model="play.messageContent">
+    <button class="btn-primary" ng-click="play.sendMessage()">Submit</button>
+</div>
+
+<div ng-if="play.showResults" style="text-align: center;">
+    <div ng-if="play.gameState.health <= 0">
+        <h1>Oh no! You died. You earn no experience for this game.</h1>
+        <button ng-click="play.beginClick()" class="btn btn-lg btn-primary" style="margin-top: 10%;">Play Again</button>
+    </div>
+
+    <div ng-if="play.gameState.health > 0">
+        <h1>Congratulations, you made it past the early game! Here are your results.</h1>
+        <h3>Level: {{play.gameState.level}}</h3>
+        <h3>Gold: {{play.gameState.gold}}</h3>
+
+        <h3>You earned {{play.gameState.gold}} experience for this game.</h3>
+        <button ng-click="play.beginClick()" class="btn btn-lg btn-primary" style="margin-top: 10%;">Play Again</button>
+    </div>
 </div>

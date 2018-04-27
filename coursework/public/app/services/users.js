@@ -1,9 +1,10 @@
 angular.module('userService', [])
 
-.factory('user', function($http) {
+.factory('User', function($http, Auth) {
     var userFactory = {};
 
-    userFactory.createUser = function(username, password) {
-        return $http.post('/user', username, password);
-    }
+    userFactory.updateUser = function(expgained) {
+    };
+
+    return userFactory;
 });

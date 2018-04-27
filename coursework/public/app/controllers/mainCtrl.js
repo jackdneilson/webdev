@@ -21,8 +21,8 @@ angular.module('mainCtrl', ['app.routes'])
 
         Auth.login(vm.loginData.username, vm.loginData.password)
             .then(function(data) {
-                if (data.success) {
-                    $location.path('/');
+                if (data.data.success) {
+                    $location.path('/play');
                 } else {
                     vm.error = data;
                 }
@@ -39,12 +39,4 @@ angular.module('mainCtrl', ['app.routes'])
 
         $location.path('/');
     };
-})
-
-.controller('playController', function() {
-    var vm = this;
-})
-
-.controller('loginController', function() {
-    var vm = this;
 });
