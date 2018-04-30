@@ -11,7 +11,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="user in leaderboard.users">
+    <tr ng-repeat="user in leaderboard.users | orderBy:'-experience'">
         <td>{{user.username}}</td>
         <td>{{user.rank}}</td>
         <td>{{user.experience}}</td>

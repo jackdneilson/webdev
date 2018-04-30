@@ -22,11 +22,12 @@ angular.module('playCtrl', ['app.routes', 'userService'])
                 });
         };
 
+        //Listen for new chat messages
         Socket.on('new message', function(data) {
             vm.messages.push(data);
         });
 
-
+        //Initalise game
         vm.beginClick = function() {
             vm.beginClicked = true;
             vm.showResults = false;
@@ -75,6 +76,7 @@ angular.module('playCtrl', ['app.routes', 'userService'])
                 vm.gameState.jungle_camps_redside ++;
             }
 
+            //Logic for user choices
             var random = Math.random();
             switch(choice) {
                 case "Level Q":
@@ -205,15 +207,16 @@ angular.module('playCtrl', ['app.routes', 'userService'])
             randomEvent();
             checkExp();
 
+            //If game is over, display results and update user xp
             if (vm.gameState.health <= 0) {
                 vm.showResults = true;
-            } else if (vm.gameState.turn > 3) {
+            } else if (vm.gameState.turn > 20) {
                 vm.showResults = true;
                 vm.error = User.updateUser(vm.gameState.gold);
-                User.updateUser(vm.gameState.gold);
             }
         }
 
+        //Called every turn to see if user needs to level up
         function checkExp() {
             if (vm.gameState.exp > 1000 && vm.gameState.level <= 18) {
                 vm.gameState.exp -= 1000;
@@ -221,6 +224,7 @@ angular.module('playCtrl', ['app.routes', 'userService'])
             }
         }
 
+        //Called every turn to check if random event is happening
         function randomEvent() {
             var rand = Math.random();
             if (rand < 0.7) return;
@@ -233,7 +237,7 @@ angular.module('playCtrl', ['app.routes', 'userService'])
             }
         }
 
-        //States for game to be in (level up, farm, etc.)
+        //Called to populate options when leveling up
         function levelUp() {
             enableOptions();
 
@@ -261,6 +265,7 @@ angular.module('playCtrl', ['app.routes', 'userService'])
             }
         }
 
+        //Called to populate options when farming
         function farm() {
             enableOptions();
 
@@ -284,6 +289,7 @@ angular.module('playCtrl', ['app.routes', 'userService'])
 
         }
 
+        //Called to populate options for enemy invade
         function invade() {
             enableOptions();
 
@@ -297,6 +303,7 @@ angular.module('playCtrl', ['app.routes', 'userService'])
             vm.choice4_disabled = true;
         }
 
+        //Called to populate options for taking tower
         function tower() {
             enableOptions();
 
@@ -310,6 +317,7 @@ angular.module('playCtrl', ['app.routes', 'userService'])
             vm.choice4_disabled = true;
         }
 
+        //Called to populate options for dragon
         function dragon() {
             enableOptions();
 

@@ -63,8 +63,6 @@ router.use(function(req, res, next) {
             reason: 'No token provided.'
         })
     }
-
-    next();
 });
 
 //Route to get information about current user (stored in token auth middleware)
@@ -72,97 +70,62 @@ router.get('/', function(req, res) {
     res.send(req.decoded);
 });
 
-//Route to update a single user given id
-router.post('/', function(req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
+//Route to update a single user's experience
+router.post('/update', function(req, res) {
+    var username = req.decoded['username'];
     var experienceGained = req.body.experienceGained;
-
-    if (req.decoded['acc_type'] !== 'admin' && req.decoded['id'] !== user_id) {
-        return res.status(403).send({
-            success: false,
-            reason: 'Account has insufficient privileges.'
-        })
-    }
 
     User.findOne({
         username: username
     })
-        .select('username password rank experience acc_type')
+        .select('username rank experience acc_type')
         .exec(function(err, user) {
-            if (err) {
-                switch (err.code) {
-                    default:
-                        res.json({
-                            success: false,
-                            reason: err
-                        })
-                }
-            }
-
-            if (!user) {
-                res.json({
-                    success: false,
-                    reason: 'Invalid user ID.'
-                });
-            } else if (user) {
-                if (username) user.username = username;
-                if (password) user.password = password;
-                if (experienceGained) user.experience += experienceGained;
-                if (user.experience > 10000) {
-                    switch (user.rank) {
-                        case 'Bronze':
-                            user.experience -= 10000;
-                            user.rank = 'Silver';
-                            break;
-                        case 'Silver':
-                            user.experience -= 10000;
-                            user.rank = 'Gold';
-                            break;
-                        case 'Gold':
-                            user.experience -= 10000;
-                            user.rank = 'Platinum';
-                            break;
-                        case 'Platinum':
-                            user.experience -= 10000;
-                            user.rank = 'Diamond';
-                            break;
-                        case 'Diamond':
-                            user.experience -= 10000;
-                            user.rank = 'Master';
-                            break;
-                        case 'Master':
-                            user.experience -= 10000;
-                            user.rank = 'Challenger';
-                            break;
-                    }
-                }
-            }
-        })
-        .save(function(err) {
             if (err) {
                 res.json({
                     success: false,
                     reason: err
                 });
-                return;
+            } else {
+                if (!user) {
+                    res.json({
+                        success: false,
+                        reason: 'Invalid user ID.'
+                    });
+                } else if (user) {
+                    if (experienceGained) user.experience += experienceGained;
+                    while (user.experience > 1000 && user.rank !== 'Challenger') {
+                        //Switch to rank up user
+                        switch (user.rank) {
+                            case 'Bronze':
+                                user.experience -= 1000;
+                                user.rank = 'Silver';
+                                break;
+                            case 'Silver':
+                                user.experience -= 1000;
+                                user.rank = 'Gold';
+                                break;
+                            case 'Gold':
+                                user.experience -= 1000;
+                                user.rank = 'Platinum';
+                                break;
+                            case 'Platinum':
+                                user.experience -= 1000;
+                                user.rank = 'Diamond';
+                                break;
+                            case 'Diamond':
+                                user.experience -= 1000;
+                                user.rank = 'Master';
+                                break;
+                            case 'Master':
+                                user.experience -= 1000;
+                                user.rank = 'Challenger';
+                                break;
+                        }
+                    }
+
+                    user.save();
+                }
             }
-
-            //Token contents no longer consistent with state, must regenerate.
-            var token = jwt.sign({
-                id: user.id,
-                username: user.username,
-                rank: user.rank,
-                experience: user.experience,
-                acc_type: user.acc_type
-            }, secret, {
-                expiresIn: '24h'
-            });
-
-            window.localStorage.setItem('token', token);
-            return res.json({
-                success: true
-            })
         });
 });
 

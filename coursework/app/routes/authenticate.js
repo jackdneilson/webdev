@@ -16,7 +16,7 @@ router.post('/', function(req, res){
     User.findOne({
         username: req.body.username
     })
-        .select('username password')
+        .select('username password rank experience acc_type')
         .exec(function(err, user) {
             if (err) throw err;
 
@@ -37,8 +37,6 @@ router.post('/', function(req, res){
                     var token = jwt.sign({
                         id: user._id,
                         username: user.username,
-                        rank: user.rank,
-                        experience: user.experience,
                         acc_type: user.acc_type
                     }, secret, {
                         expiresIn: '24h'

@@ -4,6 +4,21 @@ angular.module('authService', [])
 .factory('Auth', function($http, $q, AuthToken) {
     var authFactory = {};
 
+    authFactory.createAccount = function(username, password) {
+        return $http.post('/api/user/new', {
+            username: username,
+            password: password
+        })
+            .then(function(data) {
+                return {success: true}
+            })
+            .catch(function(reason) {
+                return {
+                    success: false,
+                    reason: reason};
+            });
+    };
+
     authFactory.login = function(username, password) {
         return $http.post('/api/authenticate', {
             username: username,
@@ -20,6 +35,13 @@ angular.module('authService', [])
             });
     };
 
+    authFactory.getUser = function() {
+        return $http.get('/api/user')
+            .then(function(data) {
+                return data;
+            });
+    };
+
     authFactory.logout = function() {
         AuthToken.setToken();
     };
@@ -29,17 +51,6 @@ angular.module('authService', [])
             return true;
         } else {
             return false;
-        }
-    };
-
-    authFactory.getUser = function() {
-        if (AuthToken.getToken()) {
-            return $http.get('/api/user');
-        } else {
-            return $q.reject({
-                success: false,
-                reason: "User has no token."
-            });
         }
     };
 

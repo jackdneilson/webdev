@@ -36,10 +36,7 @@ var UserSchema = new Schema({
     }
 }, {collection: 'coachio'});
 
-//TODO: Add more validation
-
 //Hash password before user is saved
-//TODO: Add salt
 UserSchema.pre('save', function(next) {
     var user = this;
     if (!user.isModified('password')) return next();

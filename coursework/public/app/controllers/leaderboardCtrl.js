@@ -1,5 +1,4 @@
 angular.module('leaderboardCtrl', ['app.routes', 'leaderboardService'])
-
     .controller('leaderboardController', function(Leaderboard) {
         var vm = this;
 

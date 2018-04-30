@@ -23,6 +23,7 @@ angular.module('app.routes', ['ngRoute'])
             controllerAs: 'play'
         })
 
+        //Route for the login page
         .when('/login', {
             templateUrl: 'app/views/pages/login.html',
             controller: 'mainController',
